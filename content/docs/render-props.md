@@ -1,12 +1,12 @@
 ---
 id: render-props
-title: Render Props
+title: رندر props
 permalink: docs/render-props.html
 ---
 
-The term ["render prop"](https://cdb.reacttraining.com/use-a-render-prop-50de598f11ce) refers to a technique for sharing code between React components using a prop whose value is a function.
+اصطلاح ["رندر prop"](https://cdb.reacttraining.com/use-a-render-prop-50de598f11ce) به تکنیکی برای به اشتراک گذاری کد بین کامپوننت های ری‌اکت با استفاده از prop که مقدار آن یک تابع است اشاره دارد.
 
-A component with a render prop takes a function that returns a React element and calls it instead of implementing its own render logic.
+یک کامپوننت با رندر prop تابعی را می گیرد که المنتی از ری‌اکت را برمی گرداند و به جای اجرای منطقی رندر خود، آن را فراخوانی می کند.
 
 ```jsx
 <DataProvider render={data => (
@@ -14,15 +14,15 @@ A component with a render prop takes a function that returns a React element and
 )}/>
 ```
 
-Libraries that use render props include [React Router](https://reacttraining.com/react-router/web/api/Route/render-func), [Downshift](https://github.com/paypal/downshift) and [Formik](https://github.com/jaredpalmer/formik).
+کتابخانه هایی که از prop های رندر استفاده می کنند عبارتند از [React Router](https://reacttraining.com/react-router/web/api/Route/render-func), [Downshift](https://github.com/paypal/downshift) و [Formik](https://github.com/jaredpalmer/formik).
 
-In this document, we’ll discuss why render props are useful, and how to write your own.
+در این سند، ما در مورد اینکه چرا رندر prop ها مفید هستند و چگونه می توانید prop خودتان را بنویسید، بحث خواهیم کرد.
 
-## Use Render Props for Cross-Cutting Concerns {#use-render-props-for-cross-cutting-concerns}
+## از رندر prop ها برای جلوگیری از مشکلات cross-cutting استفاده کنید {#use-render-props-for-cross-cutting-concerns}
 
-Components are the primary unit of code reuse in React, but it's not always obvious how to share the state or behavior that one component encapsulates to other components that need that same state.
+کامپوننت ها واحد اصلی استفاده مجدد از کد در ری‌اکت هستند، اما همیشه مشخص نیست که چگونه state یا رفتاری را که یک کامپوننت محصور می کند با کامپوننت های دیگری که به همان state نیاز دارند به اشتراک بگذاریم.
 
-For example, the following component tracks the mouse position in a web app:
+به عنوان مثال، مؤلفه زیر موقعیت ماوس را در یک برنامه وب ردیابی می کند:
 
 ```js
 class MouseTracker extends React.Component {
@@ -50,11 +50,13 @@ class MouseTracker extends React.Component {
 }
 ```
 
-As the cursor moves around the screen, the component displays its (x, y) coordinates in a `<p>`.
+همچنانی که مکان نما در صفحه حرکت می کند، کامپوننت، مختصات (x، y) آن را در یک `<p>` نمایش می‌دهد.
 
-Now the question is: How can we reuse this behavior in another component? In other words, if another component needs to know about the cursor position, can we encapsulate that behavior so that we can easily share it with that component?
+حال سوال این است: چگونه می‌توانیم از این رفتار در کامپوننت دیگری مجدداً استفاده کنیم؟ به عبارت دیگر، اگر کامپوننت دیگری نیاز به دانستن موقعیت مکان نما داشته باشد، آیا می توانیم آن رفتار را کپسوله کنیم تا بتوانیم به راحتی آن را با آن کامپوننت به اشتراک بگذاریم؟
 
 Since components are the basic unit of code reuse in React, let's try refactoring the code a bit to use a `<Mouse>` component that encapsulates the behavior we need to reuse elsewhere.
+
+از آنجایی که کامپوننت‌ها واحد اصلی استفاده مجدد از کد در ری‌اکت هستند، بیایید سعی کنیم کمی کد را تغییر دهیم تا از کامپوننت `<Mouse>` استفاده کنیم، که رفتاری را که ما باید در جاهای دیگر دوباره استفاده کنیم را در بر می‌گیرد.
 
 ```js
 // The <Mouse> component encapsulates the behavior we need...
